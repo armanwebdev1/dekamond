@@ -37,11 +37,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl">
-      <body
+      <main
         className={`${inter.variable} ${vazirmatn.variable} antialiased bg-[#f5f6fa]`}
       >
         {children}
-      </body>
+      </main>
     </html>
   );
 }
