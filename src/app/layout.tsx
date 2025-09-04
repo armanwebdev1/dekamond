@@ -37,11 +37,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl">
-      <main
-        className={`${inter.variable} ${vazirmatn.variable} antialiased bg-[#f5f6fa]`}
-      >
-        {children}
-      </main>
+      <body>
+        <main
+          className={`${inter.variable} ${vazirmatn.variable} antialiased bg-[#f5f6fa]`}
+        >
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
