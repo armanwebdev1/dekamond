@@ -19,11 +19,11 @@ const vazirmatn = Vazirmatn({
 export const metadata: Metadata = {
   title: "پنل کاربری دکاموند",
   description: "سیستم احراز هویت ساده با Next.js",
-  metadataBase: new URL("https://your-vercel-domain.vercel.app"),
+  metadataBase: new URL("https://dekamond-xi.vercel.app"),
   openGraph: {
     title: "پنل کاربری دکاموند",
     description: "سیستم احراز هویت ساده با Next.js",
-    url: "https://your-vercel-domain.vercel.app",
+    url: "https://dekamond-xi.vercel.app",
     siteName: "Dekamond Auth",
     locale: "fa_IR",
     type: "website",
