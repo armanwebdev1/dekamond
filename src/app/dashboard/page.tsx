@@ -47,7 +47,7 @@ export default function DashboardPage() {
 
           <Button
             onClick={logout}
-            className="bg-[#111] text-white font-bold rounded-lg px-6 py-3 transition duration-300 hover:-translate-y-[2px] hover:shadow-[0_8px_20px_rgba(0,198,255,0.3)] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+            className="font-vazir bg-[#111] text-white font-bold rounded-lg px-6 py-3 transition duration-300 hover:-translate-y-[2px] hover:shadow-[0_8px_20px_rgba(0,198,255,0.3)] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 cursor-pointer"
           >
             خروج
           </Button>
