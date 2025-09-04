@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# راهنمای پروژه
 
-## Getting Started
+این مخزن یک نمونه اپلیکیشن Next.js با تمرکز روی سرعت، فیدلیتی پیکسلی، دسترسی‌پذیری، و معماری قابل نگهداری است. صفحات لاگین و داشبورد با اسکلتون‌های همسان، الگوهای تکرارشونده، و لایه‌های مشترک پیاده‌سازی شده‌اند تا تجربه از اولین فریم تا محتوای نهایی یک‌دست و روان باشد.
 
-First, run the development server:
+---
+
+## ویژگی‌ها
+
+- **فیدلیتی پیکسلی:** تطابق دقیق با دیزاین با استفاده از Tailwind CSS v4+ و کامپوننت‌های ماژولار.
+- **اسکلتون‌های یکپارچه:** حذف FOUC و وضعیت‌های خالی با اسکلتون‌های قابل تنظیم.
+- **لایه‌بندی شفاف:** `AuthLayout` و `MainLayout` برای ساختاردهی صفحات و کاهش شلوغی فایل‌ها.
+- **دسترسی‌پذیری:** نقش‌ها، برچسب‌ها و فوکوس استایل‌ها رعایت شده‌اند.
+- **معماری مقیاس‌پذیر:** کارت‌های داشبورد، گرید واکنش‌گرا، و هدر صفحه به‌صورت اجزای قابل استفاده‌مجدد.
+- **کدنویسی تایپ‌سیف:** TypeScript سراسری، با الگوهای واضح برای مدیریت حالت و اعتبارسنجی فرم.
+
+---
+
+## تکنولوژی‌ها
+
+- **فریم‌ورک:** Next.js 15.4+ (App Router)
+- **کتابخانه UI:** React 18+
+- **زبان:** TypeScript
+- **استایل:** Tailwind CSS v4+
+- **اجزای UI:** shadcn/ui
+- **کیفیت کد:** ESLint + Prettier
+
+---
+
+## راه‌اندازی
+
+### پیش‌نیازها
+
+- **Node.js:** نسخه فعال LTS
+- **Package manager:** pnpm (ترجیحی) یا npm/yarn
+
+### نصب و اجرای محلی
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# نصب وابستگی‌ها
+pnpm install
+
+# راه‌اندازی متغیرهای محیطی
+cp .env.example .env.local
+# مقداردهی متغیرها در .env.local
+
+# توسعه (hot reload)
 pnpm dev
-# or
-bun dev
+
+# ساخت نسخه تولید
+pnpm build
+
+# اجرای نسخه تولید
+pnpm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### اسکریپت‌ها
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| اسکریپت          | کارکرد                   |
+| ---------------- | ------------------------ |
+| `pnpm dev`       | اجرای سرور توسعه         |
+| `pnpm build`     | ساخت اپلیکیشن برای تولید |
+| `pnpm start`     | اجرای سرور تولید         |
+| `pnpm lint`      | بررسی قوانین ESLint      |
+| `pnpm format`    | قالب‌بندی کد با Prettier |
+| `pnpm typecheck` | چک کردن TypeScript       |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+> نکته: اگر از npm یا yarn استفاده می‌کنید، معادل همان دستورها را اجرا کنید.
 
-## Learn More
+### متغیرهای محیطی
 
-To learn more about Next.js, take a look at the following resources:
+- **NEXT_PUBLIC_APP_URL:** آدرس عمومی اپ (برای متاتگ‌ها و Redirect)
+- **AUTH_SECRET یا توکن‌های مربوط:** در صورت نیاز به احراز هویت سمت سرور
+- سایر متغیرها بسته به سرویس‌های خارجی (در صورت استفاده)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ساختار پوشه‌ها
 
-## Deploy on Vercel
+```txt
+src/
+  app/
+    auth/
+      login/
+        page.tsx          # صفحه لاگین
+    dashboard/
+        page.tsx          # صفحه داشبورد
+    layout.tsx            # ریشه لایه‌ها (Theme, Providers)
+    globals.css           # استایل‌های سراسری
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  components/
+    ui/
+      input.tsx
+      button.tsx
+      label.tsx
+  lib/
+      validatePone.ts      # اعتبارسنجی شماره تلفن لاگین
+      useAuth.ts          # منطق احراز هویت سمت کلاینت
+        utils.ts
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## کیفیت و عملکرد
+
+- **عملکرد:**
+
+  - **اسکلتون‌ها:** تجربه بارگذاری ادراکی سریع‌تر و حذف پرش محتوا.
+  - **کدتقسیمی:** استفاده از تقسیم کد در سطح مسیرها و اجزای سنگین.
+  - **تصاویر و متا:** استفاده از Next/Image و متاتگ‌های کامل برای اشتراک‌گذاری.
+
+- **کیفیت کد:**
+  - **Type-safe:** مدل‌ها و props تایپ‌شده؛ `typecheck` در CI توصیه می‌شود.
+  - **Lint/Format:** ESLint و Prettier برای یکنواختی سبک کدنویسی.
+  - **آزمون‌پذیری:** اجزای کلیدی ماژولار و قابل تست در ایزوله.
