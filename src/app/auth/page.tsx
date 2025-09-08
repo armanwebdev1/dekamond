@@ -7,12 +7,8 @@ import { Label } from "@/components/ui/label";
 import { iranPhoneRegex } from "@/lib/validatePhone";
 import { useAuth, type AuthUser } from "@/lib/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
-
-type RandomUser = {
-  name: { first: string; last: string };
-  email: string;
-  picture: { large: string };
-};
+import { AuthService } from "@/services/auth.service";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function AuthPage() {
   // If user exists, redirect to dashboard
@@ -25,8 +21,9 @@ export default function AuthPage() {
   // Skeleton while auth state is being checked
   if (!isReady) {
     return (
-      <div className="flex h-screen bg-[#f5f6fa] justify-center items-center p-8 rtl">
-        <div className="flex w-full max-w-[1100px] h-[90vh] rounded-2xl overflow-hidden bg-white shadow-[0_12px_40px_rgba(0,0,0,0.15)] relative max-md:flex-col max-md:h-auto p-8">
+      <div className="flex h-screen justify-center items-center p-8 rtl transition-colors duration-300" style={{ backgroundColor: 'var(--background)' }}>
+        <ThemeToggle />
+        <div className="flex w-full max-w-[1100px] h-[90vh] rounded-2xl overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.15)] relative max-md:flex-col max-md:h-auto p-8" style={{ backgroundColor: 'var(--card-background)' }}>
           <div className="flex flex-col justify-center flex-1 space-y-4">
             <Skeleton className="h-8 w-40" /> {/* Title */}
             <Skeleton className="h-4 w-60" /> {/* Subtitle */}
@@ -48,17 +45,7 @@ export default function AuthPage() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("https://randomuser.me/api/?results=1&nat=us");
-      if (!res.ok) throw new Error("Network error");
-      const { results }: { results: RandomUser[] } = await res.json();
-
-      const user: AuthUser = {
-        name: { first: results[0].name.first, last: results[0].name.last },
-        email: results[0].email,
-        picture: { large: results[0].picture.large },
-      };
-
-      localStorage.setItem("user", JSON.stringify(user));
+      await AuthService.login();
       window.location.href = "/dashboard";
     } catch {
       setError("خطایی رخ داده است. لطفاً دوباره تلاش کنید.");
@@ -68,13 +55,14 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex h-screen bg-[#f5f6fa] justify-center items-center p-8 rtl">
+    <div className="flex h-screen justify-center items-center p-8 rtl transition-colors duration-300" style={{ backgroundColor: 'var(--background)' }}>
+      <ThemeToggle />
       <div className="flex w-full max-w-[1100px] h-[90vh] rounded-2xl overflow-hidden bg-[url('/background.jpg')] bg-cover bg-center shadow-[0_12px_40px_rgba(0,0,0,0.3)] relative max-md:flex-col max-md:h-auto max-md:max-h-[400px] max-md:bg-none">
-        <div className="flex flex-col justify-center text-center flex-[0.7] max-w-[400px] p-16 max-md:max-w-full max-md:min-h-full max-md:p-6 backdrop-blur-[18px] animate-fadeIn bg-[rgba(255,255,255,0.25)] text-[#222]">
+        <div className="flex flex-col justify-center text-center flex-[0.7] max-w-[400px] p-16 max-md:max-w-full max-md:min-h-full max-md:p-6 backdrop-blur-[18px] animate-fadeIn transition-all duration-300" style={{ backgroundColor: 'var(--auth-overlay)', color: 'var(--auth-text)' }}>
           <h1 className="text-[2.4rem] mb-4 text-[#111] max-md:text-[1.8rem] max-sm:text-[1.5rem]">
             خوش آمدید
           </h1>
-          <p className="text-[0.8rem] mb-8 text-[#555] max-md:text-[0.9rem] max-sm:text-[0.8rem]">
+          <p className="text-[0.8rem] mb-8 max-md:text-[0.9rem] max-sm:text-[0.8rem]" style={{ color: 'var(--auth-subtitle)' }}>
             شماره تلفن خود را وارد کنید
           </p>
 
@@ -98,7 +86,12 @@ export default function AuthPage() {
               aria-invalid={!!error}
               aria-describedby={error ? "phone-error" : undefined}
               inputMode="numeric"
-              className="font-inter p-3 border border-[#ccc] rounded-lg bg-[#f9f9f9] text-[#333] mb-4 transition duration-300 text-right placeholder:text-[#aaa] placeholder:font-inter focus:outline-none focus:border-[#00c6ff] focus:bg-white max-sm:text-[0.95rem]"
+              className="font-inter p-3 border rounded-lg mb-4 transition-all duration-300 text-right placeholder:font-inter focus:outline-none focus:border-[#00c6ff] max-sm:text-[0.95rem]"
+              style={{ 
+                backgroundColor: 'var(--auth-input-bg)',
+                borderColor: 'var(--auth-input-border)',
+                color: 'var(--auth-input-text)'
+              }}
             />
 
             {error && (
@@ -113,7 +106,7 @@ export default function AuthPage() {
 
             <Button
               type="submit"
-              className="font-vazir bg-[#111] p-3 rounded-lg font-bold text-white cursor-pointer transition duration-300 text-center hover:-translate-y-[2px] hover:shadow-[0_8px_20px_rgba(0,198,255,0.3)] disabled:opacity-70 disabled:cursor-not-allowed w-full max-sm:py-[0.65rem] max-sm:text-[0.9rem]"
+              className="font-vazir bg-[#111] dark:bg-white dark:text-black p-3 rounded-lg font-bold text-white cursor-pointer transition-all duration-300 text-center hover:-translate-y-[2px] hover:shadow-[0_8px_20px_rgba(0,198,255,0.3)] disabled:opacity-70 disabled:cursor-not-allowed w-full max-sm:py-[0.65rem] max-sm:text-[0.9rem]"
               disabled={isLoading || !phone}
             >
               {isLoading ? "در حال ورود..." : "ورود"}

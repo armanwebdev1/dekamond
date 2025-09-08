@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Vazirmatn } from "next/font/google";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -38,11 +39,13 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body>
-        <main
-          className={`${inter.variable} ${vazirmatn.variable} antialiased bg-[#f5f6fa]`}
-        >
-          {children}
-        </main>
+        <ThemeProvider>
+          <main
+            className={`${inter.variable} ${vazirmatn.variable} antialiased transition-colors duration-300`}
+          >
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );
