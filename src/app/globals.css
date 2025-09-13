@@ -1,22 +1,76 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
+/* ===== THEME SYSTEM ===== */
+:root,
+[data-theme="light"] {
+  --background: #f5f6fa;
   --foreground: #171717;
+  --card-background: #ffffff;
+  --border: #e5e7eb;
+  --input-background: #f9f9f9;
+  --muted: #6b7280;
+  --accent: #3b82f6;
+  --destructive: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
+  
+  /* Auth page specific */
+  --auth-overlay: rgba(255, 255, 255, 0.25);
+  --auth-text: #222;
+  --auth-subtitle: #555;
+  --auth-input-bg: #f9f9f9;
+  --auth-input-border: #ccc;
+  --auth-input-text: #333;
+  --auth-placeholder: #aaa;
+  
+  /* Dashboard specific */
+  --dashboard-bg: #f5f6fa;
+  --dashboard-card: #ffffff;
+  --dashboard-text: #222;
+  --dashboard-subtitle: #333;
+  --dashboard-meta: #6b7280;
+}
+
+[data-theme="dark"] {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card-background: #1e293b;
+  --border: #334155;
+  --input-background: #1e293b;
+  --muted: #94a3b8;
+  --accent: #60a5fa;
+  --destructive: #f87171;
+  --success: #34d399;
+  --warning: #fbbf24;
+  
+  /* Auth page specific */
+  --auth-overlay: rgba(15, 23, 42, 0.85);
+  --auth-text: #f1f5f9;
+  --auth-subtitle: #cbd5e1;
+  --auth-input-bg: #1e293b;
+  --auth-input-border: #475569;
+  --auth-input-text: #f1f5f9;
+  --auth-placeholder: #64748b;
+  
+  /* Dashboard specific */
+  --dashboard-bg: #0f172a;
+  --dashboard-card: #1e293b;
+  --dashboard-text: #f1f5f9;
+  --dashboard-subtitle: #cbd5e1;
+  --dashboard-meta: #94a3b8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-card: var(--card-background);
+  --color-border: var(--border);
+  --color-input: var(--input-background);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
 }
 
 html,
@@ -35,6 +89,10 @@ body {
 
 body {
   font-family: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ===== ANIMATION SYSTEM ===== */
@@ -175,7 +233,10 @@ body {
 
 /* Enhanced skeleton animations */
 .skeleton-shimmer {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, 
+    var(--border) 25%, 
+    var(--muted) 50%, 
+    var(--border) 75%);
   background-size: 200px 100%;
   animation: shimmer 1.5s infinite;
 }
