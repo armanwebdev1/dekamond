@@ -7,12 +7,7 @@ import { Label } from "@/components/ui/label";
 import { iranPhoneRegex } from "@/lib/validatePhone";
 import { useAuth, type AuthUser } from "@/lib/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
-
-type RandomUser = {
-  name: { first: string; last: string };
-  email: string;
-  picture: { large: string };
-};
+import { AuthService } from "@/services/auth.service";
 
 export default function AuthPage() {
   // If user exists, redirect to dashboard
@@ -48,17 +43,7 @@ export default function AuthPage() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("https://randomuser.me/api/?results=1&nat=us");
-      if (!res.ok) throw new Error("Network error");
-      const { results }: { results: RandomUser[] } = await res.json();
-
-      const user: AuthUser = {
-        name: { first: results[0].name.first, last: results[0].name.last },
-        email: results[0].email,
-        picture: { large: results[0].picture.large },
-      };
-
-      localStorage.setItem("user", JSON.stringify(user));
+      await AuthService.login();
       window.location.href = "/dashboard";
     } catch {
       setError("خطایی رخ داده است. لطفاً دوباره تلاش کنید.");

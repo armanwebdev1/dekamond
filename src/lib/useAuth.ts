@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AuthService } from "@/services/auth.service";
 
 export type AuthUser = {
   name: { first: string; last: string };
@@ -31,8 +32,7 @@ export function useAuth(options: Options = {}) {
   const router = useRouter();
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
-    const parsed = stored ? (JSON.parse(stored) as AuthUser) : null;
+    const parsed = AuthService.getStoredUser();
 
     if (requireAuth && !parsed) {
       router.replace("/auth");
@@ -49,12 +49,12 @@ export function useAuth(options: Options = {}) {
   }, [requireAuth, redirectIfFound, router]);
 
   const login = (data: AuthUser) => {
-    localStorage.setItem("user", JSON.stringify(data));
+    AuthService.storeUser(data);
     setUser(data);
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
+    AuthService.logout();
     setUser(null);
     router.push("/auth");
   };
