@@ -1,63 +1,81 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-type Theme = 'light' | 'dark';
+type Theme = "light" | "dark" | "system";
 
-interface ThemeContextType {
+type ThemeContextValue = {
   theme: Theme;
+  resolvedTheme: "light" | "dark";
+  setTheme: (t: Theme) => void;
   toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
+};
+
+const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+
+function getSystemTheme(): "light" | "dark" {
+  if (typeof window === "undefined") return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "system";
+    const saved = window.localStorage.getItem("theme") as Theme | null;
+    return saved ?? "system";
+  });
 
-  // Initialize theme from localStorage or system preference
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const initialTheme = savedTheme || systemTheme;
-    
-    setThemeState(initialTheme);
-    setMounted(true);
-  }, []);
+  const resolvedTheme = useMemo(() => {
+    return theme === "system" ? getSystemTheme() : theme;
+  }, [theme]);
 
-  // Apply theme to document
   useEffect(() => {
-    if (mounted) {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
+    const root = document.documentElement;
+
+    // Apply .dark class for Tailwind and CSS variables
+    if (resolvedTheme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
     }
-  }, [theme, mounted]);
 
-  const toggleTheme = () => {
-    setThemeState(prev => prev === 'light' ? 'dark' : 'light');
+    // Cinematic fade effect on theme switch
+    root.style.transition = "background-color 0.3s ease, color 0.3s ease";
+  }, [resolvedTheme]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("theme", theme);
+    }
+  }, [theme]);
+
+  const value: ThemeContextValue = {
+    theme,
+    resolvedTheme,
+    setTheme,
+    toggleTheme: () =>
+      setTheme((prev) =>
+        prev === "dark" ? "light" : prev === "light" ? "dark" : getSystemTheme()
+      ),
   };
-
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-  };
-
-  // Prevent hydration mismatch
-  if (!mounted) {
-    return <div style={{ visibility: 'hidden' }}>{children}</div>;
-  }
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+  const ctx = useContext(ThemeContext);
+  if (!ctx) {
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
-  return context;
+  return ctx;
 }

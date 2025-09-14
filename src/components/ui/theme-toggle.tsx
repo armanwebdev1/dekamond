@@ -1,34 +1,56 @@
 "use client";
 
-import { useTheme } from '@/contexts/ThemeContext';
-import { Moon, Sun } from 'lucide-react';
-import { Button } from './button';
+import { Button } from "./button";
+import { useTheme } from "../../contexts/ThemeContext";
+import { Moon, Sun } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { resolvedTheme, toggleTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   return (
-    <Button
-      onClick={toggleTheme}
-      className="fixed top-4 left-4 z-50 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl p-0 flex items-center justify-center group"
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+    <motion.div
+      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed top-4 left-4 z-50"
     >
-      <div className="relative w-6 h-6">
-        <Sun 
-          className={`absolute inset-0 w-6 h-6 transition-all duration-500 ${
-            theme === 'light' 
-              ? 'rotate-0 scale-100 opacity-100' 
-              : 'rotate-90 scale-0 opacity-0'
-          }`}
-        />
-        <Moon 
-          className={`absolute inset-0 w-6 h-6 transition-all duration-500 ${
-            theme === 'dark' 
-              ? 'rotate-0 scale-100 opacity-100' 
-              : '-rotate-90 scale-0 opacity-0'
-          }`}
-        />
-      </div>
-    </Button>
+      <motion.div
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      >
+        <Button
+          type="button"
+          onClick={toggleTheme}
+          className="flex items-center gap-2 cursor-pointer transition-all duration-300"
+          aria-label="Toggle theme"
+          title="Toggle theme"
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={isDark ? "sun" : "moon"}
+              initial={{ opacity: 0, rotate: -90 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: 90 }}
+              transition={{ duration: 0.4 }}
+            >
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </motion.div>
+          </AnimatePresence>
+
+          <motion.span
+            key={isDark ? "light-label" : "dark-label"}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.3 }}
+            className="text-sm"
+          >
+            {isDark ? "روشن" : "تاریک"}
+          </motion.span>
+        </Button>
+      </motion.div>
+    </motion.div>
   );
 }
