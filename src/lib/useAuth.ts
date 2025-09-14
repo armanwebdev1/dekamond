@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AuthService } from "@/services/auth.service";
+import { AuthService } from "../services/auth.service";
 
 export type AuthUser = {
   name: { first: string; last: string };
