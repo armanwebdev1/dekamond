@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Vazirmatn } from "next/font/google";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+import { Providers } from "./providers";
 import "./globals.css";
+import { TitleUpdater } from "./TitleUpdater";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,14 +19,14 @@ const vazirmatn = Vazirmatn({
 });
 
 export const metadata: Metadata = {
-  title: "پنل کاربری دکاموند",
-  description: "سیستم احراز هویت ساده با Next.js",
-  metadataBase: new URL("https://dekamond-xi.vercel.app"),
+  title: "User Authentication Dashboard",
+  description: "A simple authentication system with Next.js",
+  metadataBase: new URL("https://your-domain.com"),
   openGraph: {
-    title: "پنل کاربری دکاموند",
-    description: "سیستم احراز هویت ساده با Next.js",
-    url: "https://dekamond-xi.vercel.app",
-    siteName: "Dekamond Auth",
+    title: "User Authentication Dashboard",
+    description: "A simple authentication system with Next.js",
+    url: "https://your-domain.com",
+    siteName: "Auth Dashboard",
     locale: "fa_IR",
     type: "website",
   },
@@ -36,16 +37,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Extract the default title from metadata
+  const defaultTitle =
+    typeof metadata.title === "string" ? metadata.title : "App";
+
   return (
-    <html lang="fa" dir="rtl">
-      <body>
-        <ThemeProvider>
-          <main
-            className={`${inter.variable} ${vazirmatn.variable} antialiased transition-colors duration-300`}
-          >
-            {children}
-          </main>
-        </ThemeProvider>
+    <html lang="fa" dir="rtl" suppressHydrationWarning>
+      <body
+        className={`transition-colors duration-300 ${inter.variable} ${vazirmatn.variable}`}
+      >
+        <Providers>
+          <TitleUpdater defaultTitle={defaultTitle} />
+          <main className="antialiased">{children}</main>
+        </Providers>
       </body>
     </html>
   );
