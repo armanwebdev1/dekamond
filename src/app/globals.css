@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* ===== THEME SYSTEM ===== */
 :root {
   --background: #f5f6fa;
   --foreground: #171717;
@@ -75,7 +74,6 @@
   --color-warning: var(--warning);
 }
 
-/* ===== UNIVERSAL TRANSITIONS ===== */
 * {
   transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
     color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
@@ -85,7 +83,6 @@
     box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ===== BASE STYLES ===== */
 html {
   scroll-behavior: smooth;
 }
@@ -100,7 +97,6 @@ body {
     color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ===== FONT UTILITIES ===== */
 .font-inter {
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
@@ -109,7 +105,6 @@ body {
   font-family: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* ===== ANIMATED ENTRANCE (OPTIONAL) ===== */
 @keyframes smoothEntrance {
   0% {
     opacity: 0;
