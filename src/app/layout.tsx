@@ -19,8 +19,8 @@ const vazirmatn = Vazirmatn({
 });
 
 export const metadata: Metadata = {
-  title: "User Authentication Dashboard",
-  description: "A simple authentication system with Next.js",
+  title: "Dashboard",
+  description: "Authentication system with Next.js",
   metadataBase: new URL("https://your-domain.com"),
   openGraph: {
     title: "User Authentication Dashboard",
@@ -37,7 +37,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Extract the default title from metadata
   const defaultTitle =
     typeof metadata.title === "string" ? metadata.title : "App";
 

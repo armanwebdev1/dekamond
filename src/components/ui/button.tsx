@@ -19,7 +19,9 @@ export function Button({
         "inline-flex items-center justify-center rounded-md text-sm font-medium",
         "btn-primary interactive-element gpu-accelerated",
         "bg-black text-white hover:bg-black/90",
-        "disabled:opacity-50 disabled:pointer-events-none",
+        "dark:bg-white dark:text-black dark:hover:bg-white/90",
+        "disabled:opacity-50 disabled:pointer-events-none disabled:bg-black disabled:text-white",
+        "dark:disabled:bg-white dark:disabled:text-black",
         "h-10 px-4 py-2",
         className
       )}
